@@ -2,15 +2,18 @@ import {
   adminUsers,
   heroes,
   jobs,
+  applications,
   type AdminUser,
   type InsertAdminUser,
   type Hero,
   type InsertHero,
   type Job,
   type InsertJob,
+  type Application,
+  type InsertApplication,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   getAdminUser(id: number): Promise<AdminUser | undefined>;
@@ -21,10 +24,18 @@ export interface IStorage {
   upsertHero(hero: InsertHero): Promise<Hero>;
 
   getJobs(): Promise<Job[]>;
+  getActiveJobs(): Promise<Job[]>;
   getJob(id: number): Promise<Job | undefined>;
   createJob(job: InsertJob): Promise<Job>;
   updateJob(id: number, job: Partial<InsertJob>): Promise<Job | undefined>;
   deleteJob(id: number): Promise<boolean>;
+
+  getApplications(): Promise<Application[]>;
+  getApplicationsByJob(jobId: number): Promise<Application[]>;
+  getApplication(id: number): Promise<Application | undefined>;
+  createApplication(application: InsertApplication): Promise<Application>;
+  updateApplication(id: number, data: Partial<InsertApplication>): Promise<Application | undefined>;
+  deleteApplication(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -88,6 +99,42 @@ export class DatabaseStorage implements IStorage {
 
   async deleteJob(id: number): Promise<boolean> {
     const result = await db.delete(jobs).where(eq(jobs.id, id)).returning();
+    return result.length > 0;
+  }
+
+  async getActiveJobs(): Promise<Job[]> {
+    return db.select().from(jobs).where(eq(jobs.isActive, true));
+  }
+
+  async getApplications(): Promise<Application[]> {
+    return db.select().from(applications).orderBy(desc(applications.id));
+  }
+
+  async getApplicationsByJob(jobId: number): Promise<Application[]> {
+    return db.select().from(applications).where(eq(applications.jobId, jobId)).orderBy(desc(applications.id));
+  }
+
+  async getApplication(id: number): Promise<Application | undefined> {
+    const [application] = await db.select().from(applications).where(eq(applications.id, id));
+    return application || undefined;
+  }
+
+  async createApplication(insertApplication: InsertApplication): Promise<Application> {
+    const [application] = await db.insert(applications).values(insertApplication).returning();
+    return application;
+  }
+
+  async updateApplication(id: number, data: Partial<InsertApplication>): Promise<Application | undefined> {
+    const [application] = await db
+      .update(applications)
+      .set(data)
+      .where(eq(applications.id, id))
+      .returning();
+    return application || undefined;
+  }
+
+  async deleteApplication(id: number): Promise<boolean> {
+    const result = await db.delete(applications).where(eq(applications.id, id)).returning();
     return result.length > 0;
   }
 }

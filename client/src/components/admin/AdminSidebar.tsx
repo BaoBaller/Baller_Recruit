@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { LayoutDashboard, Image, Briefcase, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Image, Briefcase, LogOut, ExternalLink, Users } from "lucide-react";
 
 export function AdminSidebar() {
   const [location] = useLocation();
   const { user, logout } = useAuth();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const menuItems = [
     {
@@ -37,6 +37,11 @@ export function AdminSidebar() {
       title: t.admin.jobsManagement,
       href: "/admin/jobs",
       icon: Briefcase,
+    },
+    {
+      title: language === "vi" ? "Đơn ứng tuyển" : "Applications",
+      href: "/admin/applications",
+      icon: Users,
     },
   ];
 

@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Building2, Banknote, ArrowRight, Mail } from "lucide-react";
+import { MapPin, Building2, Banknote, ArrowRight } from "lucide-react";
 import type { Job } from "@shared/schema";
 
 interface JobCardProps {
@@ -19,9 +20,6 @@ export function JobCard({ job, index }: JobCardProps) {
   const location = language === "vi" ? job.locationVi : job.locationEn;
   const salary = language === "vi" ? job.salaryVi : job.salaryEn;
   const description = language === "vi" ? job.descriptionVi : job.descriptionEn;
-
-  const applyUrl = job.applyLink || (job.applyEmail ? `mailto:${job.applyEmail}` : null);
-  const isEmailApply = !job.applyLink && job.applyEmail;
 
   return (
     <motion.div
@@ -89,27 +87,16 @@ export function JobCard({ job, index }: JobCardProps) {
         </CardContent>
 
         <CardFooter className="pt-4">
-          {applyUrl && job.isActive ? (
-            <Button asChild className="w-full" data-testid={`button-apply-${job.id}`}>
-              <a href={applyUrl} target={isEmailApply ? undefined : "_blank"} rel="noopener noreferrer">
-                {isEmailApply ? (
-                  <>
-                    <Mail className="mr-2 h-4 w-4" />
-                    {t.jobs.applyNow}
-                  </>
-                ) : (
-                  <>
-                    {t.jobs.applyNow}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </a>
+          <Link href={`/jobs/${job.id}`} className="w-full">
+            <Button 
+              className="w-full" 
+              variant={job.isActive ? "default" : "secondary"}
+              data-testid={`button-view-${job.id}`}
+            >
+              {language === "vi" ? "Xem chi tiết" : "View Details"}
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-          ) : (
-            <Button disabled className="w-full">
-              {language === "vi" ? "Không thể ứng tuyển" : "Not Available"}
-            </Button>
-          )}
+          </Link>
         </CardFooter>
       </Card>
     </motion.div>

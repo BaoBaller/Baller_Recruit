@@ -67,6 +67,28 @@ export const insertJobSchema = createInsertSchema(jobs).omit({
 export type InsertJob = z.infer<typeof insertJobSchema>;
 export type Job = typeof jobs.$inferSelect;
 
+// Job Applications - for applicant tracking
+export const applications = pgTable("applications", {
+  id: serial("id").primaryKey(),
+  jobId: serial("job_id").notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  resumeUrl: text("resume_url"),
+  resumeFilename: text("resume_filename"),
+  coverLetter: text("cover_letter"),
+  status: text("status").notNull().default("new"),
+  appliedAt: text("applied_at").notNull(),
+  notes: text("notes"),
+});
+
+export const insertApplicationSchema = createInsertSchema(applications).omit({
+  id: true,
+});
+
+export type InsertApplication = z.infer<typeof insertApplicationSchema>;
+export type Application = typeof applications.$inferSelect;
+
 // Legacy users table for compatibility
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),

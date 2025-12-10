@@ -1,21 +1,22 @@
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: './.env' });
 
-import express, { type Request, Response, NextFunction } from 'express';
+import express, { type Request, type Response, type NextFunction } from 'express';
 import session from 'express-session';
 import { registerRoutes } from './routes';
+import { serveStatic } from './static';
 import { createServer } from 'http';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const app = express();
 const httpServer = createServer(app);
 
-// Get correct dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+declare module 'http' {
+  interface IncomingMessage {
+    rawBody: unknown;
+  }
+}
 
-// ========== MIDDLEWARE ==========
+// Parse JSON (keep rawBody for things like webhooks)
 app.use(
   express.json({
     verify: (req, _res, buf) => {
@@ -26,9 +27,10 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
+// Session middleware
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'super-secret-key',
+    secret: process.env.SESSION_SECRET || 'recruiting-site-secret-key-change-in-production',
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -39,6 +41,7 @@ app.use(
   }),
 );
 
+// Simple logger
 export function log(message: string, source = 'express') {
   const formattedTime = new Date().toLocaleTimeString('en-US', {
     hour: 'numeric',
@@ -50,28 +53,27 @@ export function log(message: string, source = 'express') {
   console.log(`${formattedTime} [${source}] ${message}`);
 }
 
-// Log API responses
+// Log /api requests
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
-  let captured: any;
+  let capturedJsonResponse: any;
 
-  const originalJson = res.json;
-  res.json = function (body, ...args) {
-    captured = body;
-    return originalJson.apply(res, [body, ...args]);
+  const originalJson = res.json.bind(res);
+
+  (res as any).json = function (...args: any[]) {
+    capturedJsonResponse = args[0];
+    return (originalJson as any).apply(res, args);
   };
 
   res.on('finish', () => {
-    if (path.startsWith('/api')) {
-      log(`${req.method} ${path} ${res.statusCode} (${Date.now() - start}ms)`);
+    if (req.path.startsWith('/api')) {
+      log(`${req.method} ${req.path} ${res.statusCode} (${Date.now() - start}ms)`);
     }
   });
 
   next();
 });
 
-// ========== API ROUTES ==========
 (async () => {
   await registerRoutes(httpServer, app);
 
@@ -82,32 +84,15 @@ app.use((req, res, next) => {
     res.status(status).json({ message });
   });
 
-  // ===========================
-  // PRODUCTION: Serve frontend
-  // ===========================
+  // Production – serve built frontend
   if (process.env.NODE_ENV === 'production') {
-    const clientDist = path.join(__dirname, '../client/dist');
-
-    // Serve built static assets
-    app.use(express.static(clientDist));
-
-    // SPA fallback – always send index.html
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(clientDist, 'index.html'));
-    });
-  }
-
-  // ===========================
-  // DEVELOPMENT: Start Vite dev server
-  // ===========================
-  else {
+    serveStatic(app);
+  } else {
+    // Local dev – enable Vite HMR
     const { setupVite } = await import('./vite');
     await setupVite(httpServer, app);
   }
 
-  // Start server
   const port = parseInt(process.env.PORT || '5000');
-  httpServer.listen(port, '0.0.0.0', () => {
-    log(`Server running on port ${port}`);
-  });
+  httpServer.listen({ port, host: '0.0.0.0', reusePort: true }, () => log(`Server running on port ${port}`));
 })();

@@ -9,7 +9,7 @@ export const translations = {
       contact: 'Liên hệ',
     },
     hero: {
-      defaultTitle: 'Xây Dựng Sự Nghiệp Cùng Chúng Tôi',
+      defaultTitle: 'TỔNG QUAN VỀ BALLERHEADWEAR',
       defaultSubtitle: 'Khám phá cơ hội việc làm hấp dẫn và phát triển sự nghiệp của bạn',
       defaultCta: 'Khám Phá Ngay',
     },

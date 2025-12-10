@@ -19,7 +19,7 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const ctaText = hero ? (language === 'vi' ? hero.ctaTextVi : hero.ctaTextEn) : t.hero.defaultCta;
 
   const ctaLink = hero?.ctaLink || '#jobs';
-  const backgroundImage = hero?.imageUrl || '/Main2.jpg';
+  const backgroundImage = hero?.imageUrl || '/Main3.jpg';
   const backgroundVideo = hero?.videoUrl;
   const isVideo = hero?.backgroundType === 'video' && backgroundVideo;
 

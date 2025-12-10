@@ -51,8 +51,8 @@ async function buildAll() {
     entryPoints: ['server/index.ts'],
     platform: 'node',
     bundle: true,
-    format: 'esm', // ⭐ IMPORTANT: server must be ES modules
-    outfile: 'dist/server.mjs',
+    format: 'cjs',
+    outfile: 'dist/server.cjs',
     define: {
       'process.env.NODE_ENV': '"production"',
     },

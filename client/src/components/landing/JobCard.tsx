@@ -13,7 +13,7 @@ interface JobCardProps {
 }
 
 export function JobCard({ job, index }: JobCardProps) {
-  const { language, t } = useLanguage();
+  const { language } = useLanguage();
 
   const title = language === 'vi' ? job.jobTitleVi : job.jobTitleEn;
   const department = language === 'vi' ? job.departmentVi : job.departmentEn;
@@ -28,80 +28,36 @@ export function JobCard({ job, index }: JobCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      <Card
-        className='
-    flex-1 
-    bg-gray-50 
-    rounded-3xl 
-    shadow-lg 
-    p-10 
-    flex 
-    flex-col 
-    justify-between
-    hover:shadow-xl 
-    transition-all 
-    duration-300
-  '
-        data-testid={`card-job-${job.id}`}
-      >
-        <CardHeader className='pb-3 space-y-3'>
+      <Card className='h-full flex flex-col p-8 rounded-3xl min-w-[340px] shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-card-border bg-white'>
+        <CardHeader className='pb-6 space-y-4'>
           <div className='flex items-start justify-between gap-3'>
-            <h3
-              className='text-xl font-semibold text-foreground line-clamp-2'
-              data-testid={`text-job-title-${job.id}`}
-            >
-              {title}
-            </h3>
-            <Badge
-              variant={job.isActive ? 'default' : 'secondary'}
-              className='shrink-0'
-              data-testid={`badge-job-status-${job.id}`}
-            >
+            <h3 className='text-2xl font-bold text-foreground leading-snug line-clamp-2'>{title}</h3>
+            <Badge variant={job.isActive ? 'default' : 'secondary'}>
               {job.isActive ? (language === 'vi' ? 'Đang tuyển' : 'Hiring') : language === 'vi' ? 'Đã đóng' : 'Closed'}
             </Badge>
           </div>
         </CardHeader>
 
-        <CardContent className='flex-1 space-y-4'>
+        <CardContent className='flex-1 space-y-6 text-base overflow-hidden'>
           <div className='space-y-2'>
             <div className='flex items-center gap-2 text-muted-foreground'>
-              <Building2 className='h-4 w-4 shrink-0' />
-              <span
-                className='text-sm'
-                data-testid={`text-job-department-${job.id}`}
-              >
-                {department}
-              </span>
+              <Building2 className='h-4 w-4' />
+              <span className='text-base font-medium'>{department}</span>
             </div>
             <div className='flex items-center gap-2 text-muted-foreground'>
-              <MapPin className='h-4 w-4 shrink-0' />
-              <span
-                className='text-sm'
-                data-testid={`text-job-location-${job.id}`}
-              >
-                {location}
-              </span>
+              <MapPin className='h-4 w-4' />
+              <span className='text-base font-medium'>{location}</span>
             </div>
             <div className='flex items-center gap-2 text-primary font-medium'>
-              <Banknote className='h-4 w-4 shrink-0' />
-              <span
-                className='text-sm'
-                data-testid={`text-job-salary-${job.id}`}
-              >
-                {salary}
-              </span>
+              <Banknote className='h-4 w-4' />
+              <span className='text-base font-medium'>{salary}</span>
             </div>
           </div>
 
-          <p
-            className='text-muted-foreground text-sm line-clamp-3 leading-relaxed'
-            data-testid={`text-job-description-${job.id}`}
-          >
-            {description}
-          </p>
+          <p className='text-muted-foreground text-base font-medium leading-relaxed line-clamp-4'>{description}</p>
         </CardContent>
 
-        <CardFooter className='pt-4'>
+        <CardFooter className='pt-6'>
           <Link
             href={`/jobs/${job.id}`}
             className='w-full'
@@ -109,7 +65,6 @@ export function JobCard({ job, index }: JobCardProps) {
             <Button
               className='w-full'
               variant={job.isActive ? 'default' : 'secondary'}
-              data-testid={`button-view-${job.id}`}
             >
               {language === 'vi' ? 'Xem chi tiết' : 'View Details'}
               <ArrowRight className='ml-2 h-4 w-4' />

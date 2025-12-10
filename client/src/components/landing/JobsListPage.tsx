@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { JobCard } from '@/components/landing/JobCard';
 import type { Job } from '@shared/schema';
+import { Footer } from '@/components/landing/Footer';
 
 export default function JobsListPage() {
   const { language } = useLanguage();
@@ -15,26 +16,24 @@ export default function JobsListPage() {
     },
   });
 
-  const title = language === 'vi' ? 'Tất Cả Công Việc' : 'All Job Openings';
   const subtitle = language === 'vi' ? 'Khám phá toàn bộ vị trí tuyển dụng của chúng tôi.' : 'Explore all available job opportunities.';
 
   return (
     <div className='min-h-screen bg-background'>
       {/* TOP HERO AREA FOR YOUR IMAGE */}
-      <div className='w-full h-64 bg-muted flex items-center justify-center relative'>
+      <div className='w-full h-90 bg-muted flex items-center justify-center relative'>
         {/* Put your image here */}
         <img
-          src='/hiring-process.jpg' // <-- replace with your image
+          src='/Quy_Trinh_5.png'
           alt='Hiring Process'
           className='w-full h-full object-cover opacity-80'
         />
 
         <div className='absolute inset-0 bg-black/30'></div>
-        <h1 className='absolute text-white text-4xl font-bold'>{title}</h1>
       </div>
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 py-16'>
-        <p className='text-lg text-muted-foreground text-center mb-8'>{subtitle}</p>
+        <p className='text-4xl text-muted-foreground text-center mb-8 font-bold'>{subtitle}</p>
 
         {/* JOB LIST */}
         {isLoading ? (
@@ -53,6 +52,7 @@ export default function JobsListPage() {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

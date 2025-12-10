@@ -64,7 +64,7 @@ export function JobsSection({ jobs, isLoading }: JobsSectionProps) {
             <p className='text-lg text-muted-foreground'>{t.jobs.noJobs}</p>
           </motion.div>
         ) : (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10'>
             {activeJobs.map((job, index) => (
               <JobCard
                 key={job.id}

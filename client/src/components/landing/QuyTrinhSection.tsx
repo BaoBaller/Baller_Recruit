@@ -8,12 +8,12 @@ export function QuyTrinhSection() {
     {
       title: 'Thử Tay Nghề',
       desc: 'Ứng viên thể hiện kỹ năng thông qua bài kiểm tra phù hợp.',
-      img: '/process-step-2.png',
+      img: '/Person3.jpg',
     },
     {
       title: 'Nhận Kết Quả',
       desc: 'Kết quả được phản hồi nhanh chóng và minh bạch.',
-      img: '/process-step-3.png',
+      img: '/Person4.jpg',
     },
   ];
 

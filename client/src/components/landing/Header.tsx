@@ -52,13 +52,29 @@ export function Header() {
                 key={item.href}
                 href={item.href}
                 className={`text-lg font-bold transition-colors hover:text-primary ${isScrolled ? 'text-foreground' : 'text-white/90 hover:text-white'}`}
-                data-testid={`link-nav-${item.href.slice(1)}`}
               >
                 {item.label}
               </a>
             ))}
+
+            {/* Contact Info (phone + email) */}
+            <div className={`flex items-center gap-6 text-lg font-medium ${isScrolled ? 'text-foreground' : 'text-white/90'}`}>
+              <a
+                href='tel:0762666875'
+                className='hover:text-primary transition-colors font-bold'
+              >
+                📞 0762 666 875
+              </a>
+              <a
+                href='mailto:hr@ballerheadwear.com'
+                className='hover:text-primary transition-colors font-bold'
+              >
+                ✉️ hr@ballerheadwear.com
+              </a>
+            </div>
           </nav>
 
+          {/*
           <div className='hidden md:flex items-center gap-4'>
             <LanguageToggle />
           </div>
@@ -75,6 +91,7 @@ export function Header() {
               {isMobileMenuOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
             </Button>
           </div>
+          */}
         </div>
       </div>
 

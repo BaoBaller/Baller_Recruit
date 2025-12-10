@@ -7,6 +7,7 @@ import { Footer } from '@/components/landing/Footer';
 import { FloatingZaloButton } from '@/components/landing/FloatingZaloButton';
 import type { Hero, Job } from '@shared/schema';
 import { QuyTrinhSection } from '@/components/landing/QuyTrinhSection';
+import { InfoSection } from '@/components/landing/InfoSection';
 
 export default function LandingPage() {
   const { data: hero, isLoading: heroLoading } = useQuery<Hero | null>({
@@ -35,7 +36,7 @@ export default function LandingPage() {
           hero={hero ?? null}
           isLoading={heroLoading}
         />
-
+        <InfoSection />
         <QuyTrinhSection />
 
         <JobsSection

@@ -1,11 +1,35 @@
 export function BenefitSection() {
   return (
     <section
+      id='benefit'
       className='w-full h-auto bg-no-repeat bg-center bg-cover'
-      style={{ backgroundImage: `url('/Quy_Trinh_5.png')` }}
     >
-      {/* Add padding-top to control height */}
-      <div className='pt-[60%] sm:pt-[45%] lg:pt-[35%]' />
+      {/* Height control (auto-adjusts by device) */}
+      <div className='pt-[160%] sm:pt-[150%] lg:pt-[40%]' />
+
+      {/* Responsive background switching */}
+      <style>
+        {`
+          /* MOBILE (default) — Vertical image */
+          #benefit {
+            background-image: url('/BenefitDoc.jpg');
+          }
+
+          /* TABLET — also vertical */
+          @media (min-width: 640px) and (max-width: 1023px) {
+            #benefit {
+              background-image: url('/BenefitDoc.jpg');
+            }
+          }
+
+          /* DESKTOP — horizontal landscape version */
+          @media (min-width: 1024px) {
+            #benefit {
+              background-image: url('/Benefit 2.png');
+            }
+          }
+        `}
+      </style>
     </section>
   );
 }

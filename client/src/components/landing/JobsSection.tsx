@@ -5,6 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent } from '@/components/ui/card';
 import { Briefcase } from 'lucide-react';
 import type { Job } from '@shared/schema';
+import { useMemo } from 'react';
 
 interface JobsSectionProps {
   jobs: Job[];
@@ -15,11 +16,31 @@ export function JobsSection({ jobs, isLoading }: JobsSectionProps) {
   const { language, t } = useLanguage();
   const activeJobs = jobs.filter((job) => job.isActive);
 
+  // Duplicate jobs for infinite loop effect
+  const duplicatedJobs = useMemo(() => [...activeJobs, ...activeJobs], [activeJobs]);
+
   return (
     <section
       id='jobs'
       className='py-20 bg-muted/30'
     >
+      {/* Internal CSS injected here */}
+      <style>
+        {`
+      @keyframes jobScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
+      }
+
+      .job-carousel {
+        display: flex;
+        gap: 2rem;
+        white-space: nowrap;
+        animation: jobScroll 60s linear infinite;
+      }
+    `}
+      </style>
+
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
         {/* Title */}
         <motion.div
@@ -33,7 +54,7 @@ export function JobsSection({ jobs, isLoading }: JobsSectionProps) {
           <p className='text-lg text-muted-foreground max-w-2xl mx-auto'>{t.jobs.subtitle}</p>
         </motion.div>
 
-        {/* Job list or empty state */}
+        {/* Loading */}
         {isLoading ? (
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
             {[1, 2, 3].map((i) => (
@@ -64,18 +85,30 @@ export function JobsSection({ jobs, isLoading }: JobsSectionProps) {
             <p className='text-lg text-muted-foreground'>{t.jobs.noJobs}</p>
           </motion.div>
         ) : (
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10'>
-            {activeJobs.map((job, index) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                index={index}
-              />
-            ))}
-          </div>
+          <>
+            {/* ⭐ AUTO-SCROLL CAROUSEL ⭐ */}
+            <div className='relative overflow-hidden py-10'>
+              <div
+                className='job-carousel'
+                style={{ width: `calc(${activeJobs.length} * 340px * 2)` }}
+              >
+                {duplicatedJobs.map((job, index) => (
+                  <div
+                    key={index}
+                    className='w-[340px] flex-shrink-0'
+                  >
+                    <JobCard
+                      job={job}
+                      index={index}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
         )}
 
-        {/* ALWAYS SHOW BUTTON */}
+        {/* Button */}
         <div className='flex justify-center mt-10'>
           <a
             href='/jobs'

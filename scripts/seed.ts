@@ -21,7 +21,7 @@ async function seed() {
   const existingHero = await db.select().from(heroes).limit(1);
   if (existingHero.length === 0) {
     await db.insert(heroes).values({
-      titleVi: 'Xây Dựng Sự Nghiệp Cùng Chúng Tôi',
+      titleVi: 'TỔNG QUAN VỀ BALLER HEADWEAR',
       titleEn: 'Build Your Career With Us',
       subtitleVi: 'Khám phá cơ hội việc làm hấp dẫn và phát triển sự nghiệp của bạn tại một trong những công ty hàng đầu trong ngành.',
       subtitleEn: 'Discover exciting job opportunities and grow your career at one of the leading companies in the industry.',

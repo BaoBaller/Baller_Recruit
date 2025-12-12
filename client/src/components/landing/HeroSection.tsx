@@ -3,6 +3,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play } from 'lucide-react';
 import type { Hero } from '@shared/schema';
+import React from 'react';
 
 interface HeroSectionProps {
   hero: Hero | null;
@@ -19,9 +20,19 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const ctaText = hero ? (language === 'vi' ? hero.ctaTextVi : hero.ctaTextEn) : t.hero.defaultCta;
 
   const ctaLink = hero?.ctaLink || '#jobs';
-  const backgroundImage = hero?.imageUrl || '/Main3.jpg';
+  const backgroundImage = Array.isArray(hero?.imageUrl) ? hero!.imageUrl : ['/Main3.jpg', '/Main4.png', '/Main5.png', '/Main6.png'];
   const backgroundVideo = hero?.videoUrl;
   const isVideo = hero?.backgroundType === 'video' && backgroundVideo;
+
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % backgroundImage.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [backgroundImage, setIndex]);
 
   return (
     <section
@@ -43,10 +54,18 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
           />
         </video>
       ) : (
-        <div
-          className='absolute inset-0 bg-cover bg-center bg-no-repeat'
-          style={{ backgroundImage: `url(${backgroundImage})` }}
-        />
+        <div className='absolute inset-0 overflow-hidden'>
+          {backgroundImage.map((img, i) => (
+            <motion.div
+              key={`${i}-${index}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: index === i ? 1 : 0 }}
+              transition={{ duration: 2, ease: 'easeInOut' }}
+              className='absolute inset-0 bg-cover bg-center bg-no-repeat'
+              style={{ backgroundImage: `url(${img})` }}
+            />
+          ))}
+        </div>
       )}
 
       <div className='absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30' />

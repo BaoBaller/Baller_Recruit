@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play } from 'lucide-react';
@@ -20,7 +20,9 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const ctaText = hero ? (language === 'vi' ? hero.ctaTextVi : hero.ctaTextEn) : t.hero.defaultCta;
 
   const ctaLink = hero?.ctaLink || '#jobs';
-  const backgroundImage = Array.isArray(hero?.imageUrl) ? hero!.imageUrl : ['/Main4.png', '/Main5.png', '/Main6.png'];
+  const backgroundImage = Array.isArray(hero?.imageUrl)
+    ? hero!.imageUrl
+    : ['/BALLER_HOMPAGE_1-01_11zon.webp', '/BALLER_HOMPAGE_1-03_11zon.webp', '/BALLER_HOMPAGE_1-04_11zon.webp'];
   const backgroundVideo = hero?.videoUrl;
   const isVideo = hero?.backgroundType === 'video' && backgroundVideo;
 
@@ -29,10 +31,17 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   React.useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % backgroundImage.length);
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [backgroundImage, setIndex]);
+
+  React.useEffect(() => {
+    backgroundImage.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   return (
     <section
@@ -55,16 +64,17 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
         </video>
       ) : (
         <div className='absolute inset-0 overflow-hidden'>
-          {backgroundImage.map((img, i) => (
+          <AnimatePresence mode='wait'>
             <motion.div
-              key={`${i}-${index}`}
+              key={backgroundImage[index]}
               initial={{ opacity: 0 }}
-              animate={{ opacity: index === i ? 1 : 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 3, ease: 'easeInOut' }}
               className='absolute inset-0 bg-cover bg-center bg-no-repeat'
-              style={{ backgroundImage: `url(${img})` }}
+              style={{ backgroundImage: `url(${backgroundImage[index]})` }}
             />
-          ))}
+          </AnimatePresence>
         </div>
       )}
 

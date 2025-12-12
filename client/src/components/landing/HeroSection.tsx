@@ -22,7 +22,7 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const ctaLink = hero?.ctaLink || '#jobs';
   const backgroundImage = Array.isArray(hero?.imageUrl)
     ? hero!.imageUrl
-    : ['/BALLER_HOMPAGE_1-01_11zon.webp', '/BALLER_HOMPAGE_1-03_11zon.webp', '/BALLER_HOMPAGE_1-04_11zon.webp'];
+    : ['/BALLER_HOMPAGE_1-05_11zon.webp', '/BALLER_HOMPAGE_1-03_11zon.webp', '/BALLER_HOMPAGE_1-04_11zon.webp'];
   const backgroundVideo = hero?.videoUrl;
   const isVideo = hero?.backgroundType === 'video' && backgroundVideo;
 

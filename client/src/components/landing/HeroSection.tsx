@@ -20,7 +20,7 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const ctaText = hero ? (language === 'vi' ? hero.ctaTextVi : hero.ctaTextEn) : t.hero.defaultCta;
 
   const ctaLink = hero?.ctaLink || '#jobs';
-  const backgroundImage = Array.isArray(hero?.imageUrl) ? hero!.imageUrl : ['/Main3.jpg', '/Main4.png', '/Main5.png', '/Main6.png'];
+  const backgroundImage = Array.isArray(hero?.imageUrl) ? hero!.imageUrl : ['/Main4.png', '/Main5.png', '/Main6.png'];
   const backgroundVideo = hero?.videoUrl;
   const isVideo = hero?.backgroundType === 'video' && backgroundVideo;
 
@@ -60,7 +60,7 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
               key={`${i}-${index}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: index === i ? 1 : 0 }}
-              transition={{ duration: 2, ease: 'easeInOut' }}
+              transition={{ duration: 3, ease: 'easeInOut' }}
               className='absolute inset-0 bg-cover bg-center bg-no-repeat'
               style={{ backgroundImage: `url(${img})` }}
             />

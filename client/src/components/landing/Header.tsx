@@ -4,6 +4,33 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { LanguageToggle, LanguageToggleCompact } from '@/components/landing/LanguageToggle';
 import { Button } from '@/components/ui/button';
 import { Menu, X, Briefcase } from 'lucide-react';
+import React from 'react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { HTMLMotionProps } from 'framer-motion';
+
+interface AnimatedContactLinkProps extends HTMLMotionProps<'a'> {
+  children: ReactNode;
+  delay?: number;
+}
+
+export const AnimatedContactLink = React.memo(function AnimatedContactLink({ children, delay = 0, className = '', ...props }: AnimatedContactLinkProps) {
+  return (
+    <motion.a
+      {...props}
+      animate={{ scale: [1, 1.08, 1], opacity: [1, 0.85, 1] }}
+      transition={{
+        duration: 1.8,
+        repeat: Infinity,
+        repeatDelay: 1,
+        ease: 'easeInOut',
+        delay,
+      }}
+      className={`font-bold hover:text-primary transition-colors will-change-transform will-change-opacity ${className}`}
+    >
+      {children}
+    </motion.a>
+  );
+});
 
 export function Header() {
   const { t } = useLanguage();
@@ -11,9 +38,18 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 20);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -59,18 +95,14 @@ export function Header() {
 
             {/* Contact Info (phone + email) */}
             <div className={`flex items-center gap-6 text-lg font-medium ${isScrolled ? 'text-foreground' : 'text-white/90'}`}>
-              <a
-                href='tel:0762666875'
-                className='hover:text-primary transition-colors font-bold'
+              <AnimatedContactLink href='tel:0762666875'>📞 0762 666 875</AnimatedContactLink>
+
+              <AnimatedContactLink
+                href='mailto:hiring@ballerheadwear.com'
+                delay={0.4}
               >
-                📞 0762 666 875
-              </a>
-              <a
-                href='mailto:hr@ballerheadwear.com'
-                className='hover:text-primary transition-colors font-bold'
-              >
-                ✉️ hr@ballerheadwear.com
-              </a>
+                ✉️ hiring@ballerheadwear.com
+              </AnimatedContactLink>
             </div>
           </nav>
 

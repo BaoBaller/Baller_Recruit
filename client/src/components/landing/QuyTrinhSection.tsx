@@ -3,7 +3,7 @@ export function QuyTrinhSection() {
     {
       title: 'Tiếp Đón',
       desc: 'Ứng viên được chào đón trong môi trường thoải mái và chuyên nghiệp.',
-      img: '/Person2.jpg',
+      img: '/Welcome.png',
     },
     {
       title: 'Thử Tay Nghề',

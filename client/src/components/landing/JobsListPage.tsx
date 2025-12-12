@@ -26,10 +26,10 @@ export default function JobsListPage() {
         <img
           src='/Quy_Trinh_5.png'
           alt='Hiring Process'
-          className='w-full h-full object-cover opacity-80'
+          className='w-full h-full object-cover opacity-100'
         />
 
-        <div className='absolute inset-0 bg-black/30'></div>
+        <div className='absolute inset-0 bg-black/15'></div>
       </div>
 
       <div className='max-w-7xl mx-auto px-4 sm:px-6 py-16'>

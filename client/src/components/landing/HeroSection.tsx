@@ -49,7 +49,7 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
         />
       )}
 
-      <div className='absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70' />
+      <div className='absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30' />
 
       <div className='relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center'>
         <motion.div

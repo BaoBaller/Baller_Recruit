@@ -3,17 +3,17 @@ export function QuyTrinhSection() {
     {
       title: 'Tiếp Đón',
       desc: 'Ứng viên được chào đón trong môi trường thoải mái và chuyên nghiệp.',
-      img: '/Welcome.png',
+      img: '/quytrinh8.jpg',
     },
     {
       title: 'Thử Tay Nghề',
       desc: 'Ứng viên thể hiện kỹ năng thông qua bài kiểm tra phù hợp.',
-      img: '/Person3.jpg',
+      img: '/quytrinh1.png',
     },
     {
       title: 'Nhận Kết Quả',
       desc: 'Kết quả được phản hồi nhanh chóng và minh bạch.',
-      img: '/Person4.jpg',
+      img: '/quytrinh3.png',
     },
   ];
 
@@ -31,14 +31,13 @@ export function QuyTrinhSection() {
           {steps.map((step, idx) => (
             <div
               key={idx}
-              className='flex-1 bg-gray-50 rounded-3xl shadow-lg p-10 text-center hover:shadow-xl transition-all duration-300'
+              className='flex-1 bg-gray-50 rounded-3xl shadow-lg p-3 text-center hover:shadow-xl transition-all duration-300'
             >
-              {/* Enlarged Circle Image */}
-              <div className='w-40 h-40 mx-auto mb-8 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center'>
+              <div className='w-full mb-8 overflow-hidden rounded-2xl'>
                 <img
                   src={step.img}
                   alt={step.title}
-                  className='w-full h-full object-cover'
+                  className='w-full h-[220px] object-cover'
                 />
               </div>
 

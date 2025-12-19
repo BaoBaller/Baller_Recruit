@@ -10,6 +10,22 @@ interface HeroSectionProps {
   isLoading: boolean;
 }
 
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    media.addEventListener('change', listener);
+    return () => media.removeEventListener('change', listener);
+  }, [matches, query]);
+
+  return matches;
+}
+
 export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const { language, t } = useLanguage();
 
@@ -20,9 +36,18 @@ export function HeroSection({ hero, isLoading }: HeroSectionProps) {
   const ctaText = hero ? (language === 'vi' ? hero.ctaTextVi : hero.ctaTextEn) : t.hero.defaultCta;
 
   const ctaLink = hero?.ctaLink || '#jobs';
-  const backgroundImage = Array.isArray(hero?.imageUrl)
-    ? hero!.imageUrl
-    : ['/BALLER_HOMPAGE_1-05_11zon.webp', '/BALLER_HOMPAGE_1-03_11zon.webp', '/BALLER_HOMPAGE_1-04_11zon.webp'];
+
+  const mobileImages = ['/mobile_hero1.jpg', '/mobile_hero2.jpg', '/mobile_hero3.jpg', '/mobile_hero4.jpg'];
+  const tabletImages = ['/mobile_hero1.jpg', '/mobile_hero2.jpg', '/mobile_hero3.jpg', '/mobile_hero4.jpg'];
+  const desktopImages = Array.isArray(hero?.imageUrl) ? hero.imageUrl : ['/BALLER_HOMPAGE_1-03_11zon.webp', '/BALLER_HOMPAGE_1-05_11zon.webp'];
+
+  const isMobile = useMediaQuery('(max-width: 640px)');
+  const isTablet = useMediaQuery('(min-width: 641px) and (max-width: 1024px)');
+
+  const selectedImages = isMobile ? mobileImages : isTablet ? tabletImages : desktopImages;
+
+  const backgroundImage = selectedImages;
+
   const backgroundVideo = hero?.videoUrl;
   const isVideo = hero?.backgroundType === 'video' && backgroundVideo;
 

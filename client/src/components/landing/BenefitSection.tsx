@@ -12,13 +12,13 @@ export function BenefitSection() {
         {`
           /* MOBILE (default) — Vertical image */
           #benefit {
-            background-image: url('/BenefitDoc.jpg');
+            background-image: url('/benefit_mobile.jpg');
           }
 
           /* TABLET — also vertical */
           @media (min-width: 640px) and (max-width: 1023px) {
             #benefit {
-              background-image: url('/BenefitDoc.jpg');
+              background-image: url('/benefit_mobile.jpg');
             }
           }
 

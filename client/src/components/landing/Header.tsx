@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { LanguageToggle, LanguageToggleCompact } from '@/components/landing/LanguageToggle';
-import { Button } from '@/components/ui/button';
-import { Menu, X, Briefcase } from 'lucide-react';
 import React from 'react';
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { HTMLMotionProps } from 'framer-motion';
 
 interface AnimatedContactLinkProps extends HTMLMotionProps<'a'> {
@@ -62,29 +59,70 @@ export function Header() {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/95 backdrop-blur-md border-b shadow-sm' : 'bg-transparent'
-      } will-change-transform`}
-      data-testid='header'
-    >
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-background/95 backdrop-blur-md border-b shadow-sm' : 'bg-transparent'}`}>
       <div className='max-w-7xl mx-auto px-4 sm:px-6'>
-        <div className='flex items-center justify-between h-20'>
+        {/* ===========================
+            ⭐ MOBILE + TABLET HEADER ⭐
+            =========================== */}
+        <div className='flex md:hidden items-center justify-between h-20'>
+          {/* Left spacer để căn giữa logo */}
+          <div className='w-10'></div>
+
+          {/* Logo ở giữa */}
+          <a
+            href='#home'
+            className='flex items-center justify-center'
+          >
+            <img
+              src={isScrolled ? '/Baller Logo (Black).png' : '/Baller New Logo (White).png'}
+              alt='Baller Logo'
+              className='h-14 w-auto object-contain'
+            />
+          </a>
+
+          {/* Button bên phải */}
+          <motion.a
+            href='#jobs'
+            initial={{ scale: 1 }}
+            animate={{
+              scale: [1, 1.06, 1],
+              boxShadow: ['0 0 0px rgba(255, 255, 255, 0.0)', '0 0 12px rgba(255, 82, 82, 0.45)', '0 0 0px rgba(255, 255, 255, 0.0)'],
+            }}
+            transition={{
+              duration: 1.8,
+              repeat: Infinity,
+              repeatDelay: 0.5,
+              ease: 'easeInOut',
+            }}
+            whileTap={{ scale: 0.92 }}
+            className='
+    bg-gradient-to-r from-red-500 to-red-600
+    text-white font-bold
+    px-4 py-2 rounded-xl text-sm
+    shadow-lg
+    active:scale-95
+  '
+          >
+            Ứng tuyển nhanh
+          </motion.a>
+        </div>
+
+        {/* ===========================
+            ⭐ DESKTOP HEADER ⭐
+            =========================== */}
+        <div className='hidden md:flex items-center justify-between h-20'>
           <a
             href='#home'
             className='flex items-center gap-2 text-xl font-bold'
-            data-testid='link-logo'
           >
-            <div className='flex items-center'>
-              <img
-                src={isScrolled ? '/Baller Logo (Black).png' : '/Baller New Logo (White).png'}
-                alt='Baller Logo'
-                className='h-12 md:h-14 w-auto object-contain'
-              />
-            </div>
+            <img
+              src={isScrolled ? '/Baller Logo (Black).png' : '/Baller New Logo (White).png'}
+              alt='Baller Logo'
+              className='h-12 md:h-14 w-auto object-contain'
+            />
           </a>
 
-          <nav className='hidden md:flex items-center gap-8'>
+          <nav className='flex items-center gap-8'>
             {navItems.map((item) => (
               <a
                 key={item.href}
@@ -95,9 +133,14 @@ export function Header() {
               </a>
             ))}
 
-            {/* Contact Info (phone + email) */}
+            {/* Contact */}
             <div className={`flex items-center gap-6 text-lg font-medium ${isScrolled ? 'text-foreground' : 'text-white/90'}`}>
-              <AnimatedContactLink href='tel:0762666875'>📞 0762 666 875</AnimatedContactLink>
+              <AnimatedContactLink
+                href='tel:0762666875'
+                className='text-red-500'
+              >
+                📞 0762 666 875
+              </AnimatedContactLink>
 
               <AnimatedContactLink
                 href='mailto:hiring@ballerheadwear.com'
@@ -107,28 +150,10 @@ export function Header() {
               </AnimatedContactLink>
             </div>
           </nav>
-
-          {/*
-          <div className='hidden md:flex items-center gap-4'>
-            <LanguageToggle />
-          </div>
-
-          <div className='flex md:hidden items-center gap-2'>
-            <LanguageToggleCompact />
-            <Button
-              variant='ghost'
-              size='icon'
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={isScrolled ? '' : 'text-white'}
-              data-testid='button-mobile-menu'
-            >
-              {isMobileMenuOpen ? <X className='h-6 w-6' /> : <Menu className='h-6 w-6' />}
-            </Button>
-          </div>
-          */}
         </div>
       </div>
 
+      {/* Mobile menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -142,9 +167,8 @@ export function Header() {
                 <a
                   key={item.href}
                   href={item.href}
-                  className='block py-3 px-4 rounded-lg font-medium text-foreground hover:bg-muted transition-colors'
+                  className='block py-3 px-4 rounded-lg font-medium text-foreground hover:bg-muted'
                   onClick={() => setIsMobileMenuOpen(false)}
-                  data-testid={`link-mobile-nav-${item.href.slice(1)}`}
                 >
                   {item.label}
                 </a>

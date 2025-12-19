@@ -32,7 +32,7 @@ export function JobCard({ job, index }: JobCardProps) {
         <CardHeader className='pb-6 space-y-4'>
           <div className='flex items-start justify-between gap-3'>
             <h3 className='text-2xl font-bold text-foreground leading-snug line-clamp-2'>{title}</h3>
-            <Badge variant={job.isActive ? 'default' : 'secondary'}>
+            <Badge className={`px-3 py-1 rounded-full text-white ${job.isActive ? 'bg-green-600' : 'bg-gray-400'}`}>
               {job.isActive ? (language === 'vi' ? 'Đang tuyển' : 'Hiring') : language === 'vi' ? 'Đã đóng' : 'Closed'}
             </Badge>
           </div>

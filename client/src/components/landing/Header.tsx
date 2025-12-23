@@ -73,25 +73,25 @@ export function Header() {
         {/* ===========================
             ⭐ MOBILE + TABLET HEADER ⭐
             =========================== */}
-        <div className='flex md:hidden items-center justify-between h-20'>
+        <div className='relative flex md:hidden items-center h-20 px-4'>
           {/* Left spacer để căn giữa logo */}
           <div className='w-10'></div>
 
           {/* Logo ở giữa */}
           <a
             href='#home'
-            className='flex items-center justify-center'
+            className='absolute left-1/2 -translate-x-1/2'
           >
             <img
               src={isScrolled ? '/Baller Logo (Black).png' : '/Baller New Logo (White).png'}
               alt='Baller Logo'
-              className='h-14 w-auto object-contain'
+              className='h-14 w-auto'
             />
           </a>
 
           {/* Button bên phải */}
           <motion.a
-            href='#jobs'
+            href='jobs/4'
             initial={{ scale: 1 }}
             animate={{
               scale: [1, 1.06, 1],
@@ -105,14 +105,10 @@ export function Header() {
             }}
             whileTap={{ scale: 0.92 }}
             className='
-    bg-gradient-to-r from-red-500 to-red-600
-    text-white font-bold
-    px-4 py-2 rounded-xl text-sm
-    shadow-lg
-    active:scale-95
+ml-auto bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-xl text-sm font-bold
   '
           >
-            Ứng tuyển nhanh
+            Ứng tuyển ngay
           </motion.a>
         </div>
 

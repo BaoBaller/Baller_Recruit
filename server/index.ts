@@ -6,8 +6,12 @@ import session from 'express-session';
 import { registerRoutes } from './routes';
 import { serveStatic } from './static';
 import { createServer } from 'http';
+import connectPgSimple from 'connect-pg-simple';
+import { pool } from './db';
+import cors from 'cors';
 
 const app = express();
+app.set('trust proxy', 1);
 const httpServer = createServer(app);
 
 declare module 'http' {
@@ -25,18 +29,35 @@ app.use(
   }),
 );
 
+app.use(
+  cors({
+    origin: ['https://ballerheadwearcareer.com', 'https://www.ballerheadwearcareer.com'],
+    credentials: true,
+  }),
+);
+
 app.use(express.urlencoded({ extended: false }));
 
 // Session middleware
+const PgSession = connectPgSimple(session);
+
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || 'recruiting-site-secret-key-change-in-production',
+    name: 'recruitflow.sid',
+    store: new PgSession({
+      pool,
+      tableName: 'session',
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SESSION_SECRET!,
     resave: false,
     saveUninitialized: false,
+    proxy: true,
     cookie: {
-      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
+      secure: true, // 🔥 HTTPS only
+      sameSite: 'none', // 🔥 REQUIRED for production auth
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
   }),
 );

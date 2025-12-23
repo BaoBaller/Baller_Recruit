@@ -17,13 +17,13 @@ export const AnimatedContactLink = ({ children, className = '', ...props }: Anim
       initial='rest'
       animate='active'
       whileHover='hover'
-      className={`relative font-bold text-red-500 ${className}`}
+      className={`relative font-bold ${className}`}
     >
       {children}
 
       {/* underline */}
       <motion.span
-        className='absolute left-0 -bottom-1 h-[2px] w-full bg-red-500'
+        className='absolute left-0 -bottom-1 h-[2px] w-full bg-current'
         variants={{
           rest: { scaleX: 0, originX: 0 },
           active: { scaleX: 1 },
@@ -146,15 +146,14 @@ export function Header() {
             <div className={`flex items-center gap-6 text-lg font-medium ${isScrolled ? 'text-foreground' : 'text-white/90'}`}>
               <AnimatedContactLink
                 href='tel:0762666061'
-                className='text-[#111111]'
+                className={isScrolled ? 'text-[#111111]' : 'text-white'}
               >
                 📞 0762 666 061
               </AnimatedContactLink>
 
               <AnimatedContactLink
                 href='mailto:hiring@ballerheadwear.com'
-                className='text-[#111111]'
-                delay={0.4}
+                className={isScrolled ? 'text-[#111111]' : 'text-white'}
               >
                 ✉️ hiring@ballerheadwear.com
               </AnimatedContactLink>

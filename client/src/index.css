@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'BallerSans';
+  src: url('/fonts/UTM Bebas.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -43,7 +51,7 @@
   --chart-3: 173 80% 32%;
   --chart-4: 142 76% 36%;
   --chart-5: 47 92% 45%;
-  --font-sans: Open Sans, sans-serif;
+  --font-sans: 'Oswald', Open Sans, sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
   --radius: 0.5rem;

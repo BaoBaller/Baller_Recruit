@@ -10,24 +10,33 @@ interface AnimatedContactLinkProps extends HTMLMotionProps<'a'> {
   delay?: number;
 }
 
-export const AnimatedContactLink = React.memo(function AnimatedContactLink({ children, delay = 0, className = '', ...props }: AnimatedContactLinkProps) {
+export const AnimatedContactLink = ({ children, className = '', ...props }: AnimatedContactLinkProps) => {
   return (
     <motion.a
       {...props}
-      animate={{ scale: [1, 1.08, 1], opacity: [1, 0.85, 1] }}
-      transition={{
-        duration: 1.8,
-        repeat: Infinity,
-        repeatDelay: 1,
-        ease: 'easeInOut',
-        delay,
-      }}
-      className={`font-bold hover:text-primary transition-colors will-change-transform will-change-opacity ${className}`}
+      initial='rest'
+      animate='active'
+      whileHover='hover'
+      className={`relative font-bold text-red-500 ${className}`}
     >
       {children}
+
+      {/* underline */}
+      <motion.span
+        className='absolute left-0 -bottom-1 h-[2px] w-full bg-red-500'
+        variants={{
+          rest: { scaleX: 0, originX: 0 },
+          active: { scaleX: 1 },
+          hover: { scaleX: 1.1 },
+        }}
+        transition={{
+          duration: 1.2,
+          ease: [0.22, 1, 0.36, 1], // luxury easing
+        }}
+      />
     </motion.a>
   );
-});
+};
 
 export function Header() {
   const { t } = useLanguage();
@@ -136,14 +145,15 @@ export function Header() {
             {/* Contact */}
             <div className={`flex items-center gap-6 text-lg font-medium ${isScrolled ? 'text-foreground' : 'text-white/90'}`}>
               <AnimatedContactLink
-                href='tel:0762666875'
-                className='text-red-500'
+                href='tel:0762666061'
+                className='text-[#111111]'
               >
-                📞 0762 666 875
+                📞 0762 666 061
               </AnimatedContactLink>
 
               <AnimatedContactLink
                 href='mailto:hiring@ballerheadwear.com'
+                className='text-[#111111]'
                 delay={0.4}
               >
                 ✉️ hiring@ballerheadwear.com

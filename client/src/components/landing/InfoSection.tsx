@@ -8,7 +8,7 @@ export function InfoSection() {
       <style>
         {`
           #welcome {
-            background-image: url('/info_final.jpg');
+            background-image: url('/info_final2.jpg');
           }
 
           @media (min-width: 1024px) {

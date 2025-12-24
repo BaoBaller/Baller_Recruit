@@ -6,6 +6,60 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Building2, Banknote, ArrowRight } from 'lucide-react';
 import type { Job } from '@shared/schema';
+import { useEffect, useRef, useState } from 'react';
+
+export function AnimatedTitle({ text }: { text: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  const [textWidth, setTextWidth] = useState(0);
+
+  useEffect(() => {
+    if (containerRef.current && textRef.current) {
+      const containerWidth = containerRef.current.offsetWidth;
+      const width = textRef.current.scrollWidth;
+
+      if (width > containerWidth) {
+        setShouldAnimate(true);
+        setTextWidth(width);
+      } else {
+        setShouldAnimate(false);
+      }
+    }
+  }, [text]);
+
+  return (
+    <div
+      ref={containerRef}
+      className='overflow-hidden w-full'
+    >
+      <motion.div
+        className='flex whitespace-nowrap'
+        animate={shouldAnimate ? { x: [-0, -textWidth] } : { x: 0 }}
+        transition={
+          shouldAnimate
+            ? {
+                duration: textWidth / 40, // speed (lower = faster)
+                ease: 'linear',
+                repeat: Infinity,
+              }
+            : undefined
+        }
+      >
+        {/* FIRST COPY */}
+        <span
+          ref={textRef}
+          className='text-2xl font-bold text-foreground pr-8'
+        >
+          {text}
+        </span>
+
+        {/* SECOND COPY (for seamless loop) */}
+        {shouldAnimate && <span className='text-2xl font-bold text-foreground pr-8'>{text}</span>}
+      </motion.div>
+    </div>
+  );
+}
 
 interface JobCardProps {
   job: Job;
@@ -28,13 +82,26 @@ export function JobCard({ job, index }: JobCardProps) {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      <Card className='h-full flex flex-col p-8 rounded-3xl min-w-[340px] shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-card-border bg-white'>
-        <CardHeader className='pb-6 space-y-4'>
-          <div className='flex items-start justify-between gap-3'>
-            <h3 className='text-2xl font-bold text-foreground leading-snug line-clamp-2'>{title}</h3>
-            <Badge className={`px-3 py-1 rounded-full text-white ${job.isActive ? 'bg-green-600' : 'bg-gray-400'}`}>
-              {job.isActive ? (language === 'vi' ? 'Đang tuyển' : 'Hiring') : language === 'vi' ? 'Đã đóng' : 'Closed'}
-            </Badge>
+      <Card className='relative h-full flex flex-col p-8 rounded-3xl min-w-[340px] bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1'>
+        <CardHeader className='pb-6 relative'>
+          {/* STATUS */}
+          <Badge
+            className={`
+    absolute top-3 right-3
+    inline-flex items-center justify-center
+    px-3 py-0.5
+    h-fit w-fit
+    rounded-full
+    text-xs font-semibold text-white
+    ${job.isActive ? 'bg-green-600' : 'bg-gray-400'}
+  `}
+          >
+            {job.isActive ? (language === 'vi' ? 'Đang tuyển' : 'Hiring') : language === 'vi' ? 'Đã đóng' : 'Closed'}
+          </Badge>
+
+          {/* TITLE */}
+          <div className='overflow-hidden w-full max-w-full'>
+            <AnimatedTitle text={title} />
           </div>
         </CardHeader>
 

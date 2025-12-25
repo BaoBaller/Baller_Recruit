@@ -8,59 +8,6 @@ import { MapPin, Building2, Banknote, ArrowRight } from 'lucide-react';
 import type { Job } from '@shared/schema';
 import { useEffect, useRef, useState } from 'react';
 
-export function AnimatedTitle({ text }: { text: string }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLSpanElement>(null);
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-  const [textWidth, setTextWidth] = useState(0);
-
-  useEffect(() => {
-    if (containerRef.current && textRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      const width = textRef.current.scrollWidth;
-
-      if (width > containerWidth) {
-        setShouldAnimate(true);
-        setTextWidth(width);
-      } else {
-        setShouldAnimate(false);
-      }
-    }
-  }, [text]);
-
-  return (
-    <div
-      ref={containerRef}
-      className='overflow-hidden w-full'
-    >
-      <motion.div
-        className='flex whitespace-nowrap'
-        animate={shouldAnimate ? { x: [-0, -textWidth] } : { x: 0 }}
-        transition={
-          shouldAnimate
-            ? {
-                duration: textWidth / 40, // speed (lower = faster)
-                ease: 'linear',
-                repeat: Infinity,
-              }
-            : undefined
-        }
-      >
-        {/* FIRST COPY */}
-        <span
-          ref={textRef}
-          className='text-2xl font-bold text-foreground pr-8'
-        >
-          {text}
-        </span>
-
-        {/* SECOND COPY (for seamless loop) */}
-        {shouldAnimate && <span className='text-2xl font-bold text-foreground pr-8'>{text}</span>}
-      </motion.div>
-    </div>
-  );
-}
-
 interface JobCardProps {
   job: Job;
   index: number;
@@ -87,7 +34,7 @@ export function JobCard({ job, index }: JobCardProps) {
           {/* STATUS */}
           <Badge
             className={`
-    absolute top-3 right-3
+    absolute top--1 right-3
     inline-flex items-center justify-center
     px-3 py-0.5
     h-fit w-fit
@@ -101,7 +48,7 @@ export function JobCard({ job, index }: JobCardProps) {
 
           {/* TITLE */}
           <div className='overflow-hidden w-full max-w-full'>
-            <AnimatedTitle text={title} />
+            <h3 className='text-2xl font-bold text-foreground whitespace-normal break-words'>{title}</h3>
           </div>
         </CardHeader>
 

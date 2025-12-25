@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Building2, Banknote, ArrowRight } from 'lucide-react';
 import type { Job } from '@shared/schema';
-import { useEffect, useRef, useState } from 'react';
 
 interface JobCardProps {
   job: Job;
@@ -47,7 +46,7 @@ export function JobCard({ job, index }: JobCardProps) {
           </Badge>
 
           {/* TITLE */}
-          <div className='overflow-hidden w-full max-w-full'>
+          <div className='w-full max-w-full'>
             <h3 className='text-2xl font-bold text-foreground whitespace-normal break-words'>{title}</h3>
           </div>
         </CardHeader>

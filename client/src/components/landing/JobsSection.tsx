@@ -36,7 +36,7 @@ export function JobsSection({ jobs, isLoading }: JobsSectionProps) {
         display: flex;
         gap: 2rem;
         white-space: nowrap;
-        animation: jobScroll 70s linear infinite;
+        animation: jobScroll 100s linear infinite;
       }
     `}
       </style>

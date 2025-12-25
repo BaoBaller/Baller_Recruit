@@ -288,7 +288,7 @@ export function JobDetailPage() {
                       </div>
 
                       <div className='space-y-2'>
-                        <Label htmlFor='resume'>{language === 'vi' ? 'CV/Resume' : 'Resume/CV'}</Label>
+                        <Label htmlFor='resume'>{language === 'vi' ? 'CV/Resume (Không bắt buộc)' : 'Resume/CV'}</Label>
                         <div className='border-2 border-dashed rounded-lg p-4 text-center'>
                           <input
                             id='resume'

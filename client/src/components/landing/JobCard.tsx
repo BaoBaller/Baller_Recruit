@@ -66,8 +66,6 @@ export function JobCard({ job, index }: JobCardProps) {
               <span className='text-base font-medium'>{salary}</span>
             </div>
           </div>
-
-          <p className='text-muted-foreground text-base font-medium leading-relaxed line-clamp-4'>{description}</p>
         </CardContent>
 
         <CardFooter className='pt-6'>
